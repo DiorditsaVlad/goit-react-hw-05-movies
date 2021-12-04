@@ -1,0 +1,19 @@
+.image {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin-right: 30px;
+}
+
+.wrapper {
+  display: flex;
+  margin-top: 20px;
+}
+
+.title {
+  text-align: center;
+}
+
+.descr {
+  margin-top: 50px;
+}
