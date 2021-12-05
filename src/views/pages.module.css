@@ -84,7 +84,6 @@
 }
 
 .link {
-  display: inline-block;
   text-decoration: none;
   padding: 12px;
   font-weight: 500;
@@ -92,8 +91,11 @@
   font-size: 24px;
 }
 
-.link:hover {
-  color: #bc60b0;
+.activeLink {
+  color: #bc60b4;
+  font-weight: 500;
+  font-size: 24px;
+  text-decoration: none;
 }
 
 .castList {

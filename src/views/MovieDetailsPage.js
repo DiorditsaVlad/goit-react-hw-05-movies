@@ -15,20 +15,13 @@ import MovieDetailsCard from '../components/MovieDetailsCard/MovieDetailsCard';
 import s from './pages.module.css';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 
-// const Cast = lazy(() => import('./Cast' /*webpackChunkName: 'cast' */));
-// const Reviews = lazy(() =>
-//   import('./Reviews' /*webpackChunkName: 'reviews' */),
-// );
-
 export default function MovieDetailsPage() {
   const { movieId } = useParams();
-  // const { url, path } = useRouteMatch();
+
   const navigate = useNavigate();
   const location = useLocation();
 
   const [movie, setMovie] = useState(null);
-
-  // const ref = navigate(location.state);
 
   useEffect(() => {
     movieAPI.fetchMovieById(movieId).then(setMovie);
@@ -43,7 +36,6 @@ export default function MovieDetailsPage() {
           <button type="button" className={s.button} onClick={goToBack}>
             Go back
           </button>
-
           <MovieDetailsCard movie={movie} />
         </>
       )}
@@ -53,7 +45,7 @@ export default function MovieDetailsPage() {
           <NavLink
             to={`/movies/${movieId}/cast`}
             state={{ from: location }}
-            className={s.link}
+            className={({ isActive }) => (isActive ? s.activeLink : s.link)}
           >
             Cast
           </NavLink>
@@ -62,7 +54,7 @@ export default function MovieDetailsPage() {
           <NavLink
             to={`/movies/${movieId}/reviews`}
             state={{ from: location }}
-            className={s.link}
+            className={({ isActive }) => (isActive ? s.activeLink : s.link)}
           >
             Reviews
           </NavLink>
@@ -79,14 +71,7 @@ export default function MovieDetailsPage() {
             timeout={3000}
           />
         }
-      >
-        {/* <Routes>
-          <Route path="/movies/movieId/cast" element={<Cast />} />
-
-          <Route path="/movies/movieId/reviews" element={<Reviews />} />
-        </Routes>
-        <Outlet /> */}
-      </Suspense>
+      ></Suspense>
     </div>
   );
 }

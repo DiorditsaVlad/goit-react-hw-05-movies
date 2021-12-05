@@ -1,29 +1,28 @@
 import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import * as movieAPI from '../services/apiService';
 import PageHeading from '../components/PageHeading/PageHeading';
 import MovieCardList from '../components/MovieCardList/MovieCardList';
 import s from './pages.module.css';
 
 export default function MoviesPage() {
-  const location = useLocation();
-  const navigate = useNavigate();
-
   const [searchQuery, setSearchQuery] = useState('');
   const [searchMovies, setSearchMovies] = useState([]);
   const [error, setError] = useState('');
 
-  const storedSearchQuery =
-    new URLSearchParams(location.search).get('queryBy') ?? '';
+  // const storedSearchQuery =
+  //   new URLSearchParams(location.search).get('queryBy') ?? '';
+  const [searchParams, setSearchParams] = useSearchParams();
 
+  const searchValue = searchParams.get(`query`) || '';
   useEffect(() => {
-    if (!storedSearchQuery) {
+    if (!searchValue) {
       return;
     }
-    movieAPI.fetchSearchMovies(storedSearchQuery).then(({ results }) => {
+    movieAPI.fetchSearchMovies(searchValue).then(({ results }) => {
       setSearchMovies(results);
     });
-  }, [storedSearchQuery]);
+  }, [searchValue]);
 
   const handleSearchChange = evt => {
     setSearchQuery(evt.currentTarget.value.toLowerCase());
@@ -35,11 +34,10 @@ export default function MoviesPage() {
     if (searchQuery.trim() === '') {
       return;
     }
+    const params = {};
 
-    navigate({
-      ...location,
-      search: `queryBy=${searchQuery}`,
-    });
+    params.query = searchQuery;
+    setSearchParams(params);
 
     movieAPI
       .fetchSearchMovies(searchQuery)
@@ -55,7 +53,7 @@ export default function MoviesPage() {
   };
   return (
     <div className={s.container}>
-      <PageHeading text="Advansed movie search" />
+      <PageHeading text="Movie search" />
       <form onSubmit={handleSubmit} className={s.SearchForm}>
         <button type="submit" className={s.SearchFormButton}>
           <span className={s.SearchFormButtonLabel}>Search</span>

@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, Navigate } from 'react-router-dom';
 import Loader from 'react-loader-spinner';
 
 import Navigation from './components/Navigation/Navigation';
@@ -48,7 +48,7 @@ function App() {
           </Route>
           {/* <Route path="/movies/:movieId/cast" element={<Cast />} />
           <Route path="/movies/:movieId/reviews" element={<Reviews />} /> */}
-          <Route path="*" element={<HomePage />} />
+          <Route path="*" element={<Navigate to={'/'} />} />
         </Routes>
       </Suspense>
     </>
