@@ -18,11 +18,13 @@ export default function Cast() {
           return (
             <li key={actor.id} className={s.castListItem}>
               <div>
-                <img
-                  src={`https://image.tmdb.org/t/p/w300/${actor.profile_path}`}
-                  alt={actor.name}
-                  className={s.actorImg}
-                />
+                <div className={s.imgBack}>
+                  <img
+                    src={`https://image.tmdb.org/t/p/w300/${actor.profile_path}`}
+                    alt={''}
+                    className={s.actorImg}
+                  />
+                </div>
                 <p className={s.actorName}>{actor.name}</p>
               </div>
             </li>

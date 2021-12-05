@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react';
-import { Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import Loader from 'react-loader-spinner';
 
 import Navigation from './components/Navigation/Navigation';
@@ -16,6 +16,10 @@ const MovieDetailsPage = lazy(() =>
   import(
     './views/MovieDetailsPage' /*webpackChunkName: 'movie-details-page' */
   ),
+);
+const Cast = lazy(() => import('./views/Cast' /*webpackChunkName: 'cast' */));
+const Reviews = lazy(() =>
+  import('./views/Reviews' /*webpackChunkName: 'reviews' */),
 );
 
 function App() {
@@ -34,21 +38,18 @@ function App() {
           />
         }
       >
-        <Switch>
-          <Route path="/" exact>
-            <HomePage />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/movies" element={<MoviesPage />} />
+          {/* <Route path="/movies/:movieId" element={<MovieDetailsPage />} /> */}
+          <Route path="/movies/:movieId" element={<MovieDetailsPage />}>
+            <Route path="cast" element={<Cast />} />
+            <Route path="reviews" element={<Reviews />} />
           </Route>
-
-          <Route path="/movies/:movieId">
-            <MovieDetailsPage />
-          </Route>
-
-          <Route path="/movies">
-            <MoviesPage />
-          </Route>
-
-          <Redirect to="/" />
-        </Switch>
+          {/* <Route path="/movies/:movieId/cast" element={<Cast />} />
+          <Route path="/movies/:movieId/reviews" element={<Reviews />} /> */}
+          <Route path="*" element={<HomePage />} />
+        </Routes>
       </Suspense>
     </>
   );

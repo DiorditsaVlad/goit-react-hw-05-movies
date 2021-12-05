@@ -1,13 +1,12 @@
 import {
   useParams,
   NavLink,
-  Route,
-  Switch,
-  useRouteMatch,
-  useHistory,
+  useNavigate,
+  useLocation,
+  Outlet,
 } from 'react-router-dom';
 
-import { useEffect, useState, lazy, Suspense } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import Loader from 'react-loader-spinner';
 
 import * as movieAPI from '../services/apiService';
@@ -16,33 +15,34 @@ import MovieDetailsCard from '../components/MovieDetailsCard/MovieDetailsCard';
 import s from './pages.module.css';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 
-const Cast = lazy(() => import('./Cast' /*webpackChunkName: 'cast' */));
-const Reviews = lazy(() =>
-  import('./Reviews' /*webpackChunkName: 'reviews' */),
-);
+// const Cast = lazy(() => import('./Cast' /*webpackChunkName: 'cast' */));
+// const Reviews = lazy(() =>
+//   import('./Reviews' /*webpackChunkName: 'reviews' */),
+// );
 
 export default function MovieDetailsPage() {
   const { movieId } = useParams();
-  const { url, path } = useRouteMatch();
-  const history = useHistory();
+  // const { url, path } = useRouteMatch();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const [movie, setMovie] = useState(null);
 
-  const { ref, search } = history.location.state;
+  // const ref = navigate(location.state);
 
   useEffect(() => {
     movieAPI.fetchMovieById(movieId).then(setMovie);
   }, [movieId]);
-
+  const goToBack = () => {
+    navigate(location?.state?.from ?? '/');
+  };
   return (
     <div className={s.container}>
       {movie && (
         <>
-          <NavLink to={`${ref}${search}` ?? '/'}>
-            <button type="button" className={s.button}>
-              Go back
-            </button>
-          </NavLink>
+          <button type="button" className={s.button} onClick={goToBack}>
+            Go back
+          </button>
 
           <MovieDetailsCard movie={movie} />
         </>
@@ -51,35 +51,24 @@ export default function MovieDetailsPage() {
       <ul className={s.detailsCardNavList}>
         <li className={s.navListItem}>
           <NavLink
-            to={{
-              pathname: `${url}/cast`,
-              state: {
-                ref: ref,
-                search: search,
-              },
-            }}
+            to={`/movies/${movieId}/cast`}
+            state={{ from: location }}
             className={s.link}
-            activeClassName={s.activeLink}
           >
             Cast
           </NavLink>
         </li>
         <li className={s.navListItem}>
           <NavLink
-            to={{
-              pathname: `${url}/reviews`,
-              state: {
-                ref: ref,
-                search: search,
-              },
-            }}
+            to={`/movies/${movieId}/reviews`}
+            state={{ from: location }}
             className={s.link}
-            activeClassName={s.activeLink}
           >
             Reviews
           </NavLink>
         </li>
       </ul>
+      <Outlet />
       <Suspense
         fallback={
           <Loader
@@ -91,15 +80,12 @@ export default function MovieDetailsPage() {
           />
         }
       >
-        <Switch>
-          <Route path={`${path}/cast`}>
-            <Cast />
-          </Route>
+        {/* <Routes>
+          <Route path="/movies/movieId/cast" element={<Cast />} />
 
-          <Route path={`${path}/reviews`}>
-            <Reviews />
-          </Route>
-        </Switch>
+          <Route path="/movies/movieId/reviews" element={<Reviews />} />
+        </Routes>
+        <Outlet /> */}
       </Suspense>
     </div>
   );

@@ -92,8 +92,7 @@
   font-size: 24px;
 }
 
-.activeLink {
-  composes: link;
+.link:hover {
   color: #bc60b0;
 }
 
@@ -122,7 +121,13 @@
   height: auto;
   object-fit: cover;
 }
-
+.imgBack {
+  background-position: center;
+  background-size: 100px;
+  height: 260px;
+  background-repeat: no-repeat;
+  background-image: url('https://liveinvestgroup.ru/wp-content/themes/liveinvestgroup/images/no_img.jpg');
+}
 .actorName {
   color: #222222;
   text-align: center;

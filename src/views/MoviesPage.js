@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useLocation, useHistory } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import * as movieAPI from '../services/apiService';
 import PageHeading from '../components/PageHeading/PageHeading';
 import MovieCardList from '../components/MovieCardList/MovieCardList';
@@ -7,7 +7,7 @@ import s from './pages.module.css';
 
 export default function MoviesPage() {
   const location = useLocation();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [searchQuery, setSearchQuery] = useState('');
   const [searchMovies, setSearchMovies] = useState([]);
@@ -36,7 +36,7 @@ export default function MoviesPage() {
       return;
     }
 
-    history.push({
+    navigate({
       ...location,
       search: `queryBy=${searchQuery}`,
     });
