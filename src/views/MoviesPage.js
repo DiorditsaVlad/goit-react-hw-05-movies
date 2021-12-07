@@ -28,8 +28,8 @@ export default function MoviesPage() {
     setSearchQuery(evt.currentTarget.value.toLowerCase());
   };
 
-  const handleSubmit = evt => {
-    evt.preventDefault();
+  const handleSubmit = e => {
+    e.preventDefault();
 
     if (searchQuery.trim() === '') {
       return;
